@@ -1,0 +1,130 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crypto Fishing Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(#87ceeb, #ffffff);
+      text-align: center;
+      padding: 20px;
+    }
+    #lake {
+      background: radial-gradient(circle at center, #1e90ff, #104e8b);
+      width: 80%;
+      height: 300px;
+      margin: 20px auto;
+      border-radius: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+    .fish-shadow {
+      width: 40px;
+      height: 20px;
+      background-color: rgba(0, 0, 0, 0.2);
+      border-radius: 50%;
+      position: absolute;
+      animation: swim 6s linear infinite;
+    }
+    @keyframes swim {
+      0% { left: -50px; top: 20%; }
+      100% { left: 100%; top: 50%; }
+    }
+    #boat {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 40px;
+      background: #8b4513;
+      border-radius: 10px 10px 0 0;
+      z-index: 5;
+    }
+    #character {
+      width: 20px;
+      height: 30px;
+      background: #ffcc00;
+      position: absolute;
+      top: -30px;
+      left: 40px;
+      border-radius: 50% 50% 0 0;
+    }
+    #castBtn {
+      padding: 10px 20px;
+      font-size: 18px;
+      cursor: pointer;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+    #dialogue {
+      display: none;
+      background-color: #f8f9fa;
+      padding: 20px;
+      margin: 20px auto;
+      width: 60%;
+      border: 2px solid #333;
+      border-radius: 10px;
+      text-align: left;
+    }
+    .crypto-logo {
+      width: 40px;
+      vertical-align: middle;
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Crypto Fishing Game 🎣</h1>
+  <p>Click the button to cast your line and catch a crypto!</p>
+  <div id="lake">
+    <div id="boat">
+      <div id="character"></div>
+    </div>
+    <div class="fish-shadow" style="top: 30%; animation-delay: 0s;"></div>
+    <div class="fish-shadow" style="top: 60%; animation-delay: 2s;"></div>
+    <div class="fish-shadow" style="top: 45%; animation-delay: 4s;"></div>
+  </div>
+  <button id="castBtn">Cast Line</button>
+  <div id="dialogue"></div>  <script>
+    const cryptos = [
+      { level: 1, name: 'Shiba Inu', symbol: 'SHIB', price: 0.00002, rank: 11, type: 'Meme', team: 'Ryoshi', logo: 'https://assets.coingecko.com/coins/images/11939/thumb/shiba.png', summary: 'A meme coin launched as a joke but grew a strong community.' },
+      { level: 2, name: 'JasmyCoin', symbol: 'JASMY', price: 0.016, rank: 134, type: 'IoT', team: 'Kunitake Ando', logo: 'https://assets.coingecko.com/coins/images/13868/thumb/JASMY2021.png', summary: 'Focused on decentralized IoT data storage.' },
+      { level: 3, name: 'Chainlink', symbol: 'LINK', price: 14.32, rank: 21, type: 'Oracle', team: 'Sergey Nazarov', logo: 'https://assets.coingecko.com/coins/images/877/thumb/chainlink-new-logo.png', summary: 'A decentralized oracle network providing external data to smart contracts.' },
+      { level: 4, name: 'Ethereum', symbol: 'ETH', price: 3350.00, rank: 2, type: 'Layer 1', team: 'Vitalik Buterin', logo: 'https://assets.coingecko.com/coins/images/279/thumb/ethereum.png', summary: 'Decentralized platform for smart contracts and dApps.' },
+      { level: 5, name: 'Bitcoin', symbol: 'BTC', price: 64000.00, rank: 1, type: 'Store of Value', team: 'Satoshi Nakamoto', logo: 'https://assets.coingecko.com/coins/images/1/thumb/bitcoin.png', summary: 'The original cryptocurrency and most valuable digital asset.' }
+    ];
+
+    function weightedRandom() {
+      const weights = [60, 20, 10, 7, 3];
+      let total = weights.reduce((acc, val) => acc + val);
+      let rand = Math.floor(Math.random() * total);
+      let sum = 0;
+      for (let i = 0; i < weights.length; i++) {
+        sum += weights[i];
+        if (rand < sum) return i;
+      }
+    }
+
+    function castLine() {
+      const index = weightedRandom();
+      const caught = cryptos[index];
+      const dialogue = document.getElementById('dialogue');
+      dialogue.innerHTML = `
+        <h3>You caught a ${caught.name} (${caught.symbol})!</h3>
+        <img src="${caught.logo}" class="crypto-logo">
+        <p><strong>Price:</strong> $${caught.price.toLocaleString()}</p>
+        <p><strong>Market Cap Rank:</strong> ${caught.rank}</p>
+        <p><strong>Type:</strong> ${caught.type}</p>
+        <p><strong>Team:</strong> ${caught.team}</p>
+        <p><strong>Summary:</strong> ${caught.summary}</p>
+      `;
+      dialogue.style.display = 'block';
+    }
+
+    document.getElementById('castBtn').addEventListener('click', castLine);
+  </script></body>
+</html> 
